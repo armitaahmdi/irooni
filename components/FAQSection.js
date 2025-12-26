@@ -177,7 +177,7 @@ const FAQSection = () => {
                 }`}
               >
                 <div className={`px-4 sm:px-5 md:px-6 pb-4 sm:pb-5 md:pb-6 text-gray-700 text-sm sm:text-base leading-relaxed border-t ${faq.borderColor} relative z-10`}>
-                  <div className={`bg-gradient-to-br ${faq.gradient} rounded-xl p-4 sm:p-5 -mx-2 sm:-mx-3`}>
+                  <div className={`bg-gradient-to-br ${faq.gradient} rounded-xl p-4 sm:p-5 -mx-2 sm:-mx-3 mt-2 sm:mt-0`}>
                     {faq.answer}
                   </div>
                 </div>
