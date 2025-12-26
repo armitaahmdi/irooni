@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import ProductCard from "./ProductCard";
 import { Loader2, ArrowLeft } from "lucide-react";
+import { newProducts } from "@/data/newProducts";
 
 const NewProductsSection = () => {
   const [products, setProducts] = useState([]);
@@ -17,8 +18,8 @@ const NewProductsSection = () => {
         
         if (!response.ok) {
           console.warn("Failed to fetch products:", response.status);
-          setProducts([]);
-          setDisplayedCount(0);
+          setProducts(newProducts);
+          setDisplayedCount(Math.min(4, newProducts.length));
           return;
         }
 
@@ -26,24 +27,24 @@ const NewProductsSection = () => {
         if (!contentType || !contentType.includes("application/json")) {
           const text = await response.text();
           console.error("Expected JSON but got:", contentType, text.substring(0, 100));
-          setProducts([]);
-          setDisplayedCount(0);
+          setProducts(newProducts);
+          setDisplayedCount(Math.min(4, newProducts.length));
           return;
         }
 
         const data = await response.json();
 
-        if (data.success) {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           setProducts(data.data);
           setDisplayedCount(Math.min(4, data.data.length));
         } else {
-          setProducts([]);
-          setDisplayedCount(0);
+          setProducts(newProducts);
+          setDisplayedCount(Math.min(4, newProducts.length));
         }
       } catch (error) {
         console.error("Error fetching products:", error);
-        setProducts([]);
-        setDisplayedCount(0);
+        setProducts(newProducts);
+        setDisplayedCount(Math.min(4, newProducts.length));
       } finally {
         setIsLoading(false);
       }
