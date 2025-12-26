@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import ProductCard from "./ProductCard";
 import { Loader2, ArrowLeft } from "lucide-react";
-import { newProducts as fallbackNewProducts } from "@/data/newProducts";
 
 const NewProductsSection = () => {
   const [products, setProducts] = useState([]);
@@ -14,32 +13,13 @@ const NewProductsSection = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const mappedFallback = fallbackNewProducts.map((item, index) => ({
-        ...item,
-        slug: item.slug || `fallback-${item.id || index + 1}`,
-        category: item.category || null,
-        subcategory: item.subcategory || null,
-        price: item.price,
-        originalPrice:
-          item.originalPrice && item.originalPrice > item.price
-            ? item.originalPrice
-            : null,
-        discountPercent:
-          item.originalPrice && item.originalPrice > item.price
-            ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
-            : 0,
-        images: item.images || [item.image],
-        stock: item.stock ?? 20,
-        inStock: item.inStock ?? true,
-      }));
-
       try {
         const response = await fetch("/api/products?limit=50&sortBy=newest");
         
         if (!response.ok) {
           console.warn("Failed to fetch products:", response.status);
-          setProducts(mappedFallback);
-          setDisplayedCount(Math.min(10, mappedFallback.length));
+          setProducts([]);
+          setDisplayedCount(0);
           return;
         }
 
@@ -47,8 +27,8 @@ const NewProductsSection = () => {
         if (!contentType || !contentType.includes("application/json")) {
           const text = await response.text();
           console.error("Expected JSON but got:", contentType, text.substring(0, 100));
-          setProducts(mappedFallback);
-          setDisplayedCount(Math.min(10, mappedFallback.length));
+          setProducts([]);
+          setDisplayedCount(0);
           return;
         }
 
@@ -58,13 +38,13 @@ const NewProductsSection = () => {
           setProducts(data.data);
           setDisplayedCount(Math.min(10, data.data.length));
         } else {
-          setProducts(mappedFallback);
-          setDisplayedCount(Math.min(10, mappedFallback.length));
+          setProducts([]);
+          setDisplayedCount(0);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
-        setProducts(mappedFallback);
-        setDisplayedCount(Math.min(10, mappedFallback.length));
+        setProducts([]);
+        setDisplayedCount(0);
       } finally {
         setIsLoading(false);
       }
@@ -157,4 +137,3 @@ const NewProductsSection = () => {
 };
 
 export default NewProductsSection;
-
