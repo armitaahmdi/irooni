@@ -30,8 +30,9 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 via-white to-slate-100 px-4 py-8 sm:py-10 lg:py-14">
-      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-[520px]">
+
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 via-white to-slate-100 px-4 py-8 sm:py-10">
+      <div className="max-w-sm sm:max-w-md lg:max-w-md xl:max-w-[420px]">
         <div className="bg-white rounded-2xl md:rounded-3xl border border-slate-200 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)] overflow-hidden">
           <LoginHeader step={step} />
 
