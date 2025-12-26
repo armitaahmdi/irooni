@@ -81,21 +81,20 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
         if (categoryToUse) params.category = categoryToUse;
         if (subcategorySlug) params.subcategory = subcategorySlug;
 
-        const result = await triggerGetProducts(params);
-        if (result?.data?.success) {
-          setAllProductsForFilters(result.data.data || []);
+        const result = await triggerGetProducts(params).unwrap();
+        if (result?.success) {
+          setAllProductsForFilters(result.data || []);
           return;
         }
 
-        if (result?.error?.name === "AbortError") {
-          return;
-        }
+        setAllProductsForFilters([]);
 
-        if (result?.error) {
+        const message = result?.error || result?.message;
+        if (message) {
           console.error("Error fetching products for filters:", {
-            status: result.error?.status,
-            data: result.error?.data,
-            message: result.error?.error || result.error?.message || result.error,
+            status: result?.status,
+            data: result?.data,
+            message,
           });
         }
       } catch (error) {
