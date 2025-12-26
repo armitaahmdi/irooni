@@ -1,0 +1,69 @@
+# robots.txt for پوشاک ایرونی (Irooni Clothing Store)
+# https://irooni.com/robots.txt
+
+# Allow all search engines
+User-agent: *
+Allow: /
+
+# Disallow private/admin areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /profile/
+Disallow: /orders/
+Disallow: /payment/
+Disallow: /favorites/
+Disallow: /login/
+Disallow: /register/
+
+# Allow important public pages
+Allow: /
+Allow: /products
+Allow: /products/
+Allow: /about
+Allow: /contact
+Allow: /blogs
+Allow: /blogs/
+Allow: /blog/
+Allow: /*/page
+
+# Googlebot specific rules
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 0
+
+# Googlebot-Image (for image indexing)
+User-agent: Googlebot-Image
+Allow: /
+Allow: /products/
+Allow: /blog/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+
+# Bingbot specific rules
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 1
+
+# Yandex specific rules
+User-agent: Yandex
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://irooni.com/sitemap.xml
+
+# Host (optional - helps with canonical URLs)
+# Host: irooni.com
