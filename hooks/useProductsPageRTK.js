@@ -7,7 +7,6 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { productCategories } from "@/data/categories";
 import { useProductsFilter } from "@/hooks/useProductsFilter";
 import { useLazyGetProductsQuery } from "@/store/api/productsApi";
-import { allProducts as fallbackAllProducts } from "@/data/allProducts";
 
 const PRODUCTS_PER_PAGE = 12;
 const MAX_PRICE = 5000000;
@@ -122,52 +121,6 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
     const fetchProducts = async () => {
       setIsLoading(true);
 
-      const mapFallbackProducts = () => {
-        const mapped = fallbackAllProducts.map((item) => {
-          const hasOriginal = item.originalPrice && item.originalPrice > item.price;
-          const discountPercent = hasOriginal
-            ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
-            : item.discountPercent || 0;
-
-          return {
-            ...item,
-            slug: item.slug || item.id?.toString(),
-            originalPrice: hasOriginal ? item.originalPrice : null,
-            discountPercent,
-            images: item.images || (item.image ? [item.image] : []),
-            stock: item.stock ?? 20,
-            inStock: item.inStock ?? true,
-            category: item.category || null,
-            subcategory: item.subcategory || null,
-          };
-        });
-
-        // Apply minimal filtering to match current view
-        const filtered = mapped.filter((p) => {
-          if (categorySlug && p.category !== categorySlug) return false;
-          if (subcategorySlug && p.subcategory !== subcategorySlug) return false;
-          if (inStock && !p.inStock) return false;
-          if (onSale && !(p.discountPercent > 0)) return false;
-          if (selectedSize && !(p.sizes || []).includes(selectedSize)) return false;
-          if (selectedColor && !(p.colors || []).includes(selectedColor)) return false;
-          if (searchQuery) {
-            const q = searchQuery.toLowerCase();
-            if (!p.name?.toLowerCase().includes(q) && !p.code?.toLowerCase().includes(q)) {
-              return false;
-            }
-          }
-          return true;
-        });
-
-        const total = filtered.length;
-        const totalPagesCalc = Math.max(1, Math.ceil(total / PRODUCTS_PER_PAGE));
-        const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
-        const paged = filtered.slice(start, start + PRODUCTS_PER_PAGE);
-
-        setProducts(paged);
-        setTotalPages(totalPagesCalc);
-      };
-
       try {
         const params = {
           page: currentPage,
@@ -191,7 +144,8 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
           setProducts(result.data || []);
           setTotalPages(result.pagination?.totalPages || 1);
         } else {
-          mapFallbackProducts();
+          setProducts([]);
+          setTotalPages(1);
         }
       } catch (error) {
         console.error("Error fetching products:", {
@@ -199,7 +153,8 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
           data: error?.data,
           message: error?.error || error?.message || error,
         });
-        mapFallbackProducts();
+        setProducts([]);
+        setTotalPages(1);
       } finally {
         setIsLoading(false);
       }
@@ -343,4 +298,3 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
     activeFiltersCount,
   };
 }
-

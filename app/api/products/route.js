@@ -204,6 +204,7 @@ export async function GET(request) {
             images: true,
             price: true,
             discountPercent: true,
+            rating: true,
             stock: true,
             sizeStock: true,
             sizes: true,
@@ -315,6 +316,7 @@ export async function GET(request) {
         price: finalPrice,
         originalPrice: product.discountPercent ? product.price : null,
         discountPercent: product.discountPercent,
+        rating: product.rating ?? null,
         sizes: product.sizes,
         colors: product.colors,
         stock: product.stock,
@@ -395,5 +397,4 @@ export async function GET(request) {
     );
   }
 }
-
 

@@ -99,6 +99,7 @@ export async function GET(request) {
               images: true,
               price: true,
               discountPercent: true,
+              rating: true,
               stock: true,
               sizes: true,
               colors: true,
@@ -206,6 +207,7 @@ export async function GET(request) {
               images: true,
               price: true,
               discountPercent: true,
+              rating: true,
               stock: true,
               sizes: true,
               colors: true,
@@ -295,6 +297,7 @@ export async function POST(request) {
       images = [],
       price,
       discountPercent,
+      rating,
       stock,
       sizeStock = {}, // ساختار قدیمی: {"S": {"قرمز": 3, "آبی": 2}}
       variants = [], // ساختار جدید: [{color: "قرمز", size: "S", price: 100000, stock: 3, image: "..."}]
@@ -431,6 +434,10 @@ export async function POST(request) {
         images: images || [],
         price: parseInt(price),
         discountPercent: discountPercent ? parseInt(discountPercent) : null,
+        rating:
+          rating !== undefined && rating !== null && rating !== ""
+            ? parseFloat(rating)
+            : null,
         stock: parseInt(stock) || 0,
         sizeStock: sizeStock || {}, // برای backward compatibility
         sizes: sizes || [],
@@ -506,4 +513,3 @@ export async function POST(request) {
     );
   }
 }
-

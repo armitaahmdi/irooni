@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { useProductCard } from "@/hooks/useProductCard";
 import ProductCardImage from "./product/ProductCardImage";
 import ProductCardInfo from "./product/ProductCardInfo";
 import ProductCardColors from "./product/ProductCardColors";
 import ProductCardFavoriteButton from "./product/ProductCardFavoriteButton";
 import ProductCardCartControls from "./product/ProductCardCartControls";
+import ProductQuickViewModal from "./product/ProductQuickViewModal";
 
 const ProductCard = ({ product, className = "" }) => {
   const hasDiscount =
@@ -13,6 +15,7 @@ const ProductCard = ({ product, className = "" }) => {
   const discountPercent = hasDiscount
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   const {
     isLiked,
@@ -29,7 +32,8 @@ const ProductCard = ({ product, className = "" }) => {
   } = useProductCard(product);
 
   return (
-    <div className={`group relative ${className}`}>
+    <>
+      <div className={`group relative ${className}`}>
       {/* Action Buttons */}
       <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex gap-1 sm:gap-1.5 z-30">
         <ProductCardFavoriteButton
@@ -70,6 +74,7 @@ const ProductCard = ({ product, className = "" }) => {
           hasDiscount={hasDiscount}
           discountPercent={discountPercent}
           isOutOfStock={isOutOfStock}
+          onQuickView={() => setIsQuickViewOpen(true)}
         />
 
         {/* Content Section - Flex grow to fill space */}
@@ -98,7 +103,13 @@ const ProductCard = ({ product, className = "" }) => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+      <ProductQuickViewModal
+        product={product}
+        isOpen={isQuickViewOpen}
+        onClose={() => setIsQuickViewOpen(false)}
+      />
+    </>
   );
 };
 

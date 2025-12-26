@@ -53,6 +53,27 @@ export default function ProductPricingSection({ formData, setFormData }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            امتیاز محصول (اختیاری)
+          </label>
+          <input
+            type="number"
+            min="1"
+            max="5"
+            step="0.1"
+            value={formData.rating}
+            onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
+            placeholder="مثال: 4.8"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#286378] focus:border-transparent"
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            در صورت خالی بودن، در کارت محصول ۴.۸ نمایش داده می‌شود.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">تعداد موجودی *</label>
           <input
             type="number"
@@ -94,4 +115,3 @@ export default function ProductPricingSection({ formData, setFormData }) {
     </div>
   );
 }
-
