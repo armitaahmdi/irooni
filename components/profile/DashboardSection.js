@@ -195,9 +195,9 @@ export default function DashboardSection({
                 key={order.id}
                 className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border-2 border-gray-200 hover:border-[#286378] hover:shadow-lg transition-all duration-300"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-3 mb-2">
                       <h4 className="font-bold text-gray-900">سفارش #{order.id}</h4>
                       <span
                         className={`px-3 py-1 text-xs font-medium rounded-full ${
@@ -229,10 +229,10 @@ export default function DashboardSection({
                       تومان
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
                     <Link
                       href={`/orders/${order.id}`}
-                      className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+                      className="flex w-full items-center justify-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all sm:w-auto"
                     >
                       <ExternalLink className="w-4 h-4" />
                       <span className="font-semibold">مشاهده</span>
@@ -240,7 +240,7 @@ export default function DashboardSection({
                     {order.paymentStatus === "unpaid" && (
                       <Link
                         href={`/payment/${order.id}`}
-                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#286378] to-[#43909A] text-white rounded-lg hover:from-[#43909A] hover:to-[#286378] transition-all shadow-md hover:shadow-lg"
+                        className="flex w-full items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[#286378] to-[#43909A] text-white rounded-lg hover:from-[#43909A] hover:to-[#286378] transition-all shadow-md hover:shadow-lg sm:w-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <CreditCard className="w-4 h-4" />
@@ -257,4 +257,3 @@ export default function DashboardSection({
     </div>
   );
 }
-
