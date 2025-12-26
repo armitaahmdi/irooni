@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import { Loader2 } from "lucide-react";
 import ProductCard from "./ProductCard";
-import { specialOffers as fallbackOffers } from "@/data/specialOffers";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -18,38 +17,12 @@ const SpecialOffersSlider = () => {
 
   useEffect(() => {
     const fetchDiscountedProducts = async () => {
-      const useFallbackOffers = () => {
-        // Map fallback data to the shape ProductCard expects
-        const mapped = fallbackOffers.map((item) => {
-          const hasOriginal = item.originalPrice && item.originalPrice > item.price;
-          const discountPercent = hasOriginal
-            ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
-            : item.discountPercent || 0;
-
-          return {
-            ...item,
-            slug: item.slug || item.id?.toString(),
-            category: item.category || null,
-            subcategory: item.subcategory || null,
-            price: item.price,
-            originalPrice: hasOriginal ? item.originalPrice : null,
-            discountPercent,
-            images: item.images || [item.image],
-            stock: item.stock ?? 10,
-            inStock: item.inStock ?? true,
-          };
-        });
-
-        // Only keep discounted items to match component expectation
-        return mapped.filter((product) => product.discountPercent && product.discountPercent > 0);
-      };
-
       try {
         const response = await fetch("/api/products?limit=50&onSale=true");
         
         if (!response.ok) {
           console.warn("Failed to fetch discounted products:", response.status);
-          setDiscountedProducts(useFallbackOffers());
+          setDiscountedProducts([]);
           return;
         }
 
@@ -57,7 +30,7 @@ const SpecialOffersSlider = () => {
         if (!contentType || !contentType.includes("application/json")) {
           const text = await response.text();
           console.error("Expected JSON but got:", contentType, text.substring(0, 100));
-          setDiscountedProducts(useFallbackOffers());
+          setDiscountedProducts([]);
           return;
         }
 
@@ -70,11 +43,11 @@ const SpecialOffersSlider = () => {
           );
           setDiscountedProducts(discounted);
         } else {
-          setDiscountedProducts(useFallbackOffers());
+          setDiscountedProducts([]);
         }
       } catch (error) {
         console.error("Error fetching discounted products:", error);
-        setDiscountedProducts(useFallbackOffers());
+        setDiscountedProducts([]);
       } finally {
         setIsLoading(false);
       }
