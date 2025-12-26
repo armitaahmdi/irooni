@@ -37,6 +37,7 @@ export default function ProductsFilters({
   availableColors,
   categorySlug,
 }) {
+  const filtersContentId = "products-filters-content";
   const activeFiltersCount = [
     selectedCategoryFilter,
     inStock,
@@ -66,10 +67,12 @@ export default function ProductsFilters({
           setIsFiltersExpanded={setIsFiltersExpanded}
           activeFiltersCount={activeFiltersCount}
           onClearFilters={handleClearFilters}
+          filtersContentId={filtersContentId}
         />
 
         {/* Filters Content */}
         <div
+          id={filtersContentId}
           className={`overflow-hidden transition-all duration-500 ease-in-out ${
             isFiltersExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
           }`}
