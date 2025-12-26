@@ -65,7 +65,7 @@ code {
 @media (max-width: 768px) {
   body {
     overflow-x: hidden !important;
-    padding-bottom: 5.5rem; /* Space for bottom navigation (h-20 + rounded top) */
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); /* Space for bottom navigation (h-20 + rounded top) */
   }
   
   * {
