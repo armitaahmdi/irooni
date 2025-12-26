@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { User, LogOut, ChevronDown, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useAppDispatch } from "@/store/hooks";
 import { useAuth } from "@/store/hooks";
 import { logout, fetchSession } from "@/store/slices/authSlice";
+import NavigationLink from "@/components/NavigationLink";
 
 export default function UserMenu({ mobile = false }) {
   const dispatch = useAppDispatch();
@@ -68,21 +68,21 @@ export default function UserMenu({ mobile = false }) {
   if (!isAuthenticated || !user) {
     if (mobile) {
       return (
-        <Link
+        <NavigationLink
           href="/login"
           className="px-5 py-2.5 bg-white text-[#286378] text-sm font-semibold rounded-xl hover:bg-[#A2CFFF] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
         >
           وارد شوید
-        </Link>
+        </NavigationLink>
       );
     }
     return (
-      <Link
+      <NavigationLink
         href="/login"
         className="text-sm font-semibold text-white bg-gradient-to-r from-[#286378] to-[#43909A] hover:from-[#43909A] hover:to-[#286378] transition-all duration-300 px-5 py-2.5 rounded-xl hover:shadow-lg hover:scale-105 active:scale-95 shadow-md"
       >
         وارد شوید
-      </Link>
+      </NavigationLink>
     );
   }
 
@@ -90,14 +90,14 @@ export default function UserMenu({ mobile = false }) {
     <div className="relative" ref={menuRef}>
       <div className="flex items-center gap-2">
         {isAdmin && (
-          <Link
+          <NavigationLink
             href="/admin"
             className="p-2.5 rounded-xl text-[#286378] hover:bg-gradient-to-br hover:from-[#FFD60A]/20 hover:to-[#FFD60A]/10 hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-300 relative group"
             title="پنل مدیریت"
           >
             <Settings className="w-5 h-5" />
             <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#FFD60A] rounded-full border-2 border-white"></div>
-          </Link>
+          </NavigationLink>
         )}
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -132,23 +132,23 @@ export default function UserMenu({ mobile = false }) {
               <p className="text-xs text-gray-500 mt-1">{user.phone}</p>
             </div>
             <div className="py-2">
-              <Link
+              <NavigationLink
                 href="/profile"
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:text-[#286378] hover:bg-gradient-to-r hover:from-[#A2CFFF]/25 hover:to-[#A2CFFF]/15 transition-all duration-200"
                 onClick={() => setIsOpen(false)}
               >
                 <User className="w-4 h-4" />
                 <span>پروفایل</span>
-              </Link>
+              </NavigationLink>
               {isAdmin && (
-                <Link
+                <NavigationLink
                   href="/admin"
                   className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#286378] hover:bg-gradient-to-r hover:from-[#FFD60A]/25 hover:to-[#FFD60A]/15 transition-all duration-200 font-semibold"
                   onClick={() => setIsOpen(false)}
                 >
                   <Settings className="w-4 h-4" />
                   <span>پنل مدیریت</span>
-                </Link>
+                </NavigationLink>
               )}
               <button
                 onClick={handleSignOut}

@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { isNewProduct } from "@/utils/productCardHelpers";
 import { getProductUrl } from "@/utils/productCardHelpers";
+import NavigationLink from "@/components/NavigationLink";
 
 /**
  * ProductCardImage Component
@@ -19,7 +19,7 @@ export default function ProductCardImage({
   const productUrl = getProductUrl(product);
 
   return (
-    <Link href={productUrl} prefetch={true} className="block">
+    <NavigationLink href={productUrl} prefetch={true} className="block">
       <div className="relative w-full aspect-square overflow-hidden bg-gradient-to-br from-gray-50 via-gray-50/80 to-gray-100/60 group-hover/card:from-gray-100 group-hover/card:via-gray-100/90 group-hover/card:to-gray-200/70 transition-all duration-700 rounded-t-3xl">
         {/* Soft shine effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-white/0 to-white/0 group-hover/card:from-white/20 group-hover/card:via-white/10 group-hover/card:to-white/0 transition-all duration-700 z-10 pointer-events-none"></div>
@@ -91,7 +91,6 @@ export default function ProductCardImage({
           </div>
         ) : null}
       </div>
-    </Link>
+    </NavigationLink>
   );
 }
-

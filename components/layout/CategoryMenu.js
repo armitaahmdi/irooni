@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { ChevronDown, Shirt, FileText, Package, User, Box, BriefcaseBusiness, CircleDot } from "lucide-react";
 import { productCategories } from "@/data/categories";
 import MegaMenu from "./MegaMenu";
+import NavigationLink from "@/components/NavigationLink";
 
 /**
  * CategoryMenu Component
@@ -38,7 +38,7 @@ export default function CategoryMenu({ activeMegaMenu, onMegaMenuEnter, onMegaMe
               onMouseEnter={() => onMegaMenuEnter(category.slug, category.subcategories.length > 0)}
               onMouseLeave={onMegaMenuLeave}
             >
-              <Link
+              <NavigationLink
                 href={`/${category.slug}`}
                 className={`relative flex items-center gap-1.5 text-sm font-semibold py-2.5 px-4 rounded-xl transition-all duration-300 ${
                   activeMegaMenu === category.slug
@@ -57,7 +57,7 @@ export default function CategoryMenu({ activeMegaMenu, onMegaMenuEnter, onMegaMe
                 {activeMegaMenu === category.slug && (
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-[#286378] to-[#43909A] rounded-full shadow-sm"></span>
                 )}
-              </Link>
+              </NavigationLink>
 
               {activeMegaMenu === category.slug && category.subcategories.length > 0 && (
                 <MegaMenu
@@ -73,4 +73,3 @@ export default function CategoryMenu({ activeMegaMenu, onMegaMenuEnter, onMegaMe
     </div>
   );
 }
-

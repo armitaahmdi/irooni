@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, User, ShoppingBag, Heart } from "lucide-react";
+import NavigationLink from "@/components/NavigationLink";
 
 export default function BottomNavigation() {
   const menus = [
@@ -118,7 +118,7 @@ export default function BottomNavigation() {
                 ref={(el) => (itemRefs.current[i] = el)}
                 className="w-16"
               >
-                <Link
+                <NavigationLink
                   href={menu.href}
                   onClick={() => setActive(i)}
                   className="group flex flex-col items-center pt-6 pb-2 select-none transition-transform duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#286378] motion-reduce:transition-none active:scale-[0.98]"
@@ -138,7 +138,7 @@ export default function BottomNavigation() {
                   >
                     {menu.name}
                   </span>
-                </Link>
+                </NavigationLink>
               </li>
             );
           })}
