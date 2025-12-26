@@ -124,7 +124,7 @@ export default async function sitemap() {
   const productPages = [];
   try {
     const products = await prisma.product.findMany({
-      where: { isVisible: true },
+      where: { OR: [{ isVisible: true }, { isVisible: null }] },
       select: {
         slug: true,
         updatedAt: true,

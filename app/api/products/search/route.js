@@ -20,7 +20,9 @@ export async function GET(request) {
     // جستجو در نام و کد محصول
     const products = await prisma.product.findMany({
       where: {
-        isVisible: true,
+        AND: [
+          { OR: [{ isVisible: true }, { isVisible: null }] },
+        ],
         OR: [
           { name: { contains: searchTerm, mode: "insensitive" } },
           { code: { contains: searchTerm, mode: "insensitive" } },
@@ -105,4 +107,3 @@ export async function GET(request) {
     );
   }
 }
-

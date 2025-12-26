@@ -34,9 +34,7 @@ export async function GET(request) {
     const skip = (page - 1) * limit;
 
     // ساخت where clause
-    const where = {
-      isVisible: true, // فقط محصولات visible برای کاربران
-    };
+    const where = {};
     
     if (category) {
       // پیدا کردن category بر اساس slug
@@ -119,6 +117,13 @@ export async function GET(request) {
         // No existing OR/AND, create new OR for search
         where.OR = searchConditions;
       }
+    }
+
+    const visibilityFilter = { OR: [{ isVisible: true }, { isVisible: null }] };
+    if (where.AND) {
+      where.AND.push(visibilityFilter);
+    } else {
+      where.AND = [visibilityFilter];
     }
 
     console.log(`[API] Fetching products with where:`, JSON.stringify(where, null, 2));
@@ -397,4 +402,3 @@ export async function GET(request) {
     );
   }
 }
-
