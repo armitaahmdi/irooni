@@ -10,9 +10,15 @@ export default function ProductCardFavoriteButton({
   isLiked,
   onToggleFavorite,
 }) {
+  const favoriteLabel = isLiked
+    ? "حذف از علاقه‌مندی‌ها"
+    : "افزودن به علاقه‌مندی‌ها";
+
   return (
       <button
         onClick={onToggleFavorite}
+        aria-label={favoriteLabel}
+        title={favoriteLabel}
         className={`relative w-10 h-10 sm:w-11 sm:h-11 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 active:scale-95 overflow-hidden ${
           isLiked
             ? "bg-gradient-to-br from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 border-2 border-red-400"
@@ -28,7 +34,7 @@ export default function ProductCardFavoriteButton({
             isLiked ? "fill-current scale-110" : "group-hover:scale-110"
           }`}
         />
+        <span className="sr-only">{favoriteLabel}</span>
       </button>
   );
 }
-
