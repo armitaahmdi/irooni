@@ -8,13 +8,12 @@ import { Loader2, ArrowLeft } from "lucide-react";
 const NewProductsSection = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [displayedCount, setDisplayedCount] = useState(10);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [displayedCount, setDisplayedCount] = useState(4);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("/api/products?limit=50&sortBy=newest");
+        const response = await fetch("/api/products?limit=4&sortBy=newest");
         
         if (!response.ok) {
           console.warn("Failed to fetch products:", response.status);
@@ -36,7 +35,7 @@ const NewProductsSection = () => {
 
         if (data.success) {
           setProducts(data.data);
-          setDisplayedCount(Math.min(10, data.data.length));
+          setDisplayedCount(Math.min(4, data.data.length));
         } else {
           setProducts([]);
           setDisplayedCount(0);
@@ -54,18 +53,6 @@ const NewProductsSection = () => {
   }, []);
 
   const displayedProducts = products.slice(0, displayedCount);
-  const hasMore = displayedCount < products.length;
-
-  const handleLoadMore = async () => {
-    setIsLoadingMore(true);
-    
-    // شبیه‌سازی لودینگ
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    
-    setDisplayedCount((prev) => Math.min(prev + 8, products.length));
-    setIsLoadingMore(false);
-  };
-
   return (
     <section className="w-full flex justify-center px-4 md:px-6 lg:px-8">
       <div className="w-full max-w-7xl">
@@ -105,23 +92,6 @@ const NewProductsSection = () => {
 
         {/* دکمه بارگذاری بیشتر و مشاهده همه */}
         <div className="flex flex-col items-center gap-4 mt-12">
-        {hasMore && !isLoading && (
-            <button
-              onClick={handleLoadMore}
-              disabled={isLoadingMore}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-[#286378] border border-gray-300 rounded-md hover:border-[#286378] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoadingMore ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>در حال بارگذاری...</span>
-                </>
-              ) : (
-                <span>بارگذاری بیشتر</span>
-              )}
-            </button>
-          )}
-          
           {/* لینک مشاهده همه محصولات */}
           <Link
             href="/products"
