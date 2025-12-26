@@ -19,6 +19,7 @@ export default function BottomNavigation() {
 
   const [active, setActive] = useState(0);
   const [circleRight, setCircleRight] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   // تعیین active بر اساس مسیر
   useEffect(() => {
@@ -48,6 +49,14 @@ export default function BottomNavigation() {
 
     return () => window.removeEventListener("resize", updatePosition);
   }, [active]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" dir="rtl">
