@@ -30,9 +30,9 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#A2CFFF]/15 via-white to-[#A2CFFF]/5 px-4 py-8 md:py-12">
-      <div className="w-full max-w-[420px] md:w-auto md:max-w-[450px]">
-        <div className="bg-white rounded-2xl md:rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 via-white to-slate-100 px-4 py-10">
+      <div className="w-full max-w-[420px]">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)] overflow-hidden">
           <LoginHeader step={step} />
 
           {error && (
@@ -68,12 +68,12 @@ export default function LoginPage() {
             )}
           </div>
 
-          <div className="text-center pb-6 md:pb-8 px-6 md:px-8 text-xs md:text-sm text-gray-500 border-t border-gray-100 pt-6">
+          <div className="text-center pb-6 px-6 md:px-8 text-xs md:text-sm text-slate-500 border-t border-slate-100 pt-6">
             <p>
               با ورود به سایت،{" "}
               <a
                 href="#"
-                className="text-[#286378] hover:text-[#43909A] font-semibold transition-colors duration-200 underline-offset-2 hover:underline"
+                className="text-slate-800 hover:text-slate-600 font-semibold transition-colors duration-200 underline-offset-2 hover:underline"
               >
                 قوانین و مقررات
               </a>{" "}
