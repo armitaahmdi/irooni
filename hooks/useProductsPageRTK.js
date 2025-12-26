@@ -64,12 +64,20 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
       const searchParams = buildProductsSearchParams(params);
       const response = await fetch(`/api/products?${searchParams.toString()}`);
 
+      const contentType = response.headers.get("content-type") || "";
+      const isJsonResponse = contentType.includes("application/json");
+
       if (!response.ok) {
-        throw rtkError;
+        if (isJsonResponse) {
+          return await response.json();
+        }
+        const fallbackError = new Error("Failed to fetch products from fallback API");
+        fallbackError.status = response.status;
+        fallbackError.details = await response.text();
+        throw fallbackError;
       }
 
-      const contentType = response.headers.get("content-type") || "";
-      if (!contentType.includes("application/json")) {
+      if (!isJsonResponse) {
         throw rtkError;
       }
 
