@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import NavigationLink from "@/components/NavigationLink";
+import { getColorHex } from "@/utils/colorMap";
 import { formatPrice, getProductUrl } from "@/utils/productCardHelpers";
 
 export default function ProductQuickViewModal({ product, isOpen, onClose }) {
@@ -55,8 +56,6 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
       ? [product.features]
       : [];
   const sizeChart = Array.isArray(product.sizeChart) ? product.sizeChart : [];
-  const variants = Array.isArray(product.variants) ? product.variants : [];
-  const sizeStock = product.sizeStock && typeof product.sizeStock === "object" ? product.sizeStock : null;
   const colors = Array.isArray(product.colors) ? product.colors.filter(Boolean) : [];
   const description = product.description?.trim();
   const formatDate = (value) => {
@@ -70,10 +69,6 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
     product.category ? { label: "دسته‌بندی", value: product.category } : null,
     product.subcategory ? { label: "زیردسته", value: product.subcategory } : null,
     product.material ? { label: "جنس", value: product.material } : null,
-    typeof product.stock === "number" ? { label: "موجودی", value: `${product.stock} عدد` } : null,
-    typeof product.inStock === "boolean"
-      ? { label: "وضعیت موجودی", value: product.inStock ? "موجود" : "ناموجود" }
-      : null,
     formatDate(product.createdAt)
       ? { label: "تاریخ ایجاد", value: formatDate(product.createdAt) }
       : null,
@@ -82,15 +77,28 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
       : null,
   ].filter(Boolean);
 
+  const needsBorder = (color) => {
+    return (
+      color === "سفید" ||
+      color === "کرم" ||
+      color === "بژ" ||
+      color === "کرمی" ||
+      color === "کرم روشن" ||
+      color === "کرم تیره" ||
+      color === "طوسی روشن" ||
+      color === "زرد کره ای"
+    );
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+      className="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black/40 backdrop-blur-sm px-4 py-6 overflow-y-auto"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl"
+        className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -101,8 +109,8 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
         >
           ✕
         </button>
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          <div className="relative aspect-square bg-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 h-full">
+          <div className="relative h-56 sm:h-72 md:h-auto md:aspect-square bg-gray-100">
             {primaryImage && (
               <Image
                 src={primaryImage}
@@ -113,7 +121,7 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
               />
             )}
           </div>
-          <div className="p-6 md:p-8 flex flex-col gap-4 max-h-[80vh] overflow-y-auto">
+          <div className="p-6 md:p-8 flex flex-col gap-4 overflow-y-auto md:max-h-[85vh]">
             <div className="space-y-2">
               <h3 className="text-lg md:text-xl font-bold text-gray-900">{product.name}</h3>
               {(product.code || product.material) && (
@@ -134,6 +142,17 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
                 ))}
               </div>
               <span className="font-medium">{safeRating.toFixed(1)}</span>
+            </div>
+
+            <div
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-semibold w-fit ${
+                product.inStock
+                  ? "bg-green-50/70 border-green-200/60 text-green-700"
+                  : "bg-rose-50/70 border-rose-200/60 text-rose-700"
+              }`}
+            >
+              <span className="text-[11px] text-gray-500 font-medium">موجودی</span>
+              <span>{product.inStock ? "موجود" : "ناموجود"}</span>
             </div>
 
             <div>
@@ -176,15 +195,24 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
             {colors.length > 0 && (
               <div>
                 <p className="text-xs font-semibold text-gray-600 mb-2">رنگ‌های موجود</p>
-                <div className="flex flex-wrap gap-2">
-                  {colors.map((color) => (
-                    <span
-                      key={color}
-                      className="px-2.5 py-1 text-xs rounded-full bg-gray-100 text-gray-700"
-                    >
-                      {color}
-                    </span>
-                  ))}
+                <div className="flex flex-wrap items-center gap-2">
+                  {colors.slice(0, 6).map((color) => {
+                    const colorHex = getColorHex(color);
+                    const borderClass = needsBorder(color)
+                      ? "border-2 border-gray-300"
+                      : "border border-gray-200";
+                    return (
+                      <span
+                        key={color}
+                        className={`w-6 h-6 rounded-full ${borderClass}`}
+                        style={{ backgroundColor: colorHex }}
+                        title={color}
+                      />
+                    );
+                  })}
+                  {colors.length > 6 && (
+                    <span className="text-xs text-gray-500 font-medium">+{colors.length - 6}</span>
+                  )}
                 </div>
               </div>
             )}
@@ -243,45 +271,6 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
                       ))}
                     </tbody>
                   </table>
-                </div>
-              </div>
-            )}
-
-            {variants.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-gray-600">موجودی سایز/رنگ</p>
-                <div className="space-y-2">
-                  {variants.map((variant, index) => (
-                    <div
-                      key={`${variant.size}-${variant.color}-${index}`}
-                      className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-2"
-                    >
-                      <span>
-                        {variant.size ? `سایز ${variant.size}` : "بدون سایز"}{" "}
-                        {variant.color ? `• ${variant.color}` : ""}
-                      </span>
-                      <span className="font-medium">
-                        {typeof variant.stock === "number" ? `${variant.stock} عدد` : "نامشخص"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {sizeStock && Object.keys(sizeStock).length > 0 && variants.length === 0 && (
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-gray-600">موجودی سایزها</p>
-                <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                  {Object.entries(sizeStock).map(([size, stock]) => (
-                    <div
-                      key={size}
-                      className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2"
-                    >
-                      <span>{size}</span>
-                      <span className="font-medium">{stock} عدد</span>
-                    </div>
-                  ))}
                 </div>
               </div>
             )}
