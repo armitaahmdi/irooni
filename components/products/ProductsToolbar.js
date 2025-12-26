@@ -37,6 +37,8 @@ export default function ProductsToolbar({
         <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
           <button
             onClick={() => setViewMode("grid")}
+            aria-label="نمایش شبکه‌ای"
+            title="نمایش شبکه‌ای"
             className={`p-2 rounded-lg transition-colors ${
               viewMode === "grid"
                 ? "bg-[#286378] text-white"
@@ -44,9 +46,12 @@ export default function ProductsToolbar({
             }`}
           >
             <Grid3x3 className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="sr-only">نمایش شبکه‌ای</span>
           </button>
           <button
             onClick={() => setViewMode("list")}
+            aria-label="نمایش لیستی"
+            title="نمایش لیستی"
             className={`p-2 rounded-lg transition-colors ${
               viewMode === "list"
                 ? "bg-[#286378] text-white"
@@ -54,10 +59,10 @@ export default function ProductsToolbar({
             }`}
           >
             <List className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="sr-only">نمایش لیستی</span>
           </button>
         </div>
       </div>
     </div>
   );
 }
-
