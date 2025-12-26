@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { formatPrice, getProductUrl } from "@/utils/productCardHelpers";
+import NavigationLink from "@/components/NavigationLink";
 
 /**
  * ProductCardInfo Component
@@ -11,7 +11,7 @@ export default function ProductCardInfo({ product, hasDiscount }) {
   const productUrl = getProductUrl(product);
 
   return (
-    <Link href={productUrl} className="block">
+    <NavigationLink href={productUrl} prefetch={true} className="block">
       <div className="px-3 sm:px-4 md:px-5 pt-3 sm:pt-4">
         {/* Title */}
         <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#286378] transition-all duration-300 min-h-[3rem] sm:min-h-[3.5rem] leading-5 sm:leading-6">
@@ -64,7 +64,6 @@ export default function ProductCardInfo({ product, hasDiscount }) {
           )}
         </div>
       </div>
-    </Link>
+    </NavigationLink>
   );
 }
-

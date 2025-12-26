@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, User, ShoppingBag, Heart } from "lucide-react";
+import NavigationLink from "@/components/NavigationLink";
 
 export default function BottomNavigation() {
   const menus = [
@@ -103,7 +103,7 @@ export default function BottomNavigation() {
                 ref={(el) => (itemRefs.current[i] = el)}
                 className="w-16"
               >
-                <Link
+                <NavigationLink
                   href={menu.href}
                   onClick={() => setActive(i)}
                   className="flex flex-col items-center pt-6 select-none"
@@ -121,7 +121,7 @@ export default function BottomNavigation() {
                   >
                     {menu.name}
                   </span>
-                </Link>
+                </NavigationLink>
               </li>
             );
           })}

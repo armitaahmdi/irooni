@@ -13,13 +13,22 @@ export default function NavigationLink({
   children, 
   className = "",
   prefetch = true,
+  onClick,
   ...props 
 }) {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const isActive = pathname === href;
 
-  const handleClick = (e) => {
+  const handleClick = (event) => {
+    if (onClick) {
+      onClick(event);
+    }
+
+    if (event.defaultPrevented) {
+      return;
+    }
+
     // Only use transition for client-side navigation
     if (href.startsWith('/')) {
       startTransition(() => {
@@ -40,4 +49,3 @@ export default function NavigationLink({
     </Link>
   );
 }
-

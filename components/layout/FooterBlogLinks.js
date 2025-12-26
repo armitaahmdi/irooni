@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import NavigationLink from "@/components/NavigationLink";
 
 export default function FooterBlogLinks() {
   const [latestPosts, setLatestPosts] = useState([]);
@@ -42,28 +41,28 @@ export default function FooterBlogLinks() {
   return (
     <ul className="space-y-3">
       <li>
-        <Link
+        <NavigationLink
           href="/blogs"
           className="text-[#FFD60A] hover:text-[#FFC107] transition-colors duration-300 text-sm font-semibold flex items-center gap-2 group mb-3"
           aria-label="مشاهده همه مقالات"
         >
           <span className="w-1.5 h-1.5 bg-[#FFD60A] rounded-full"></span>
           <span>مشاهده همه مقالات</span>
-        </Link>
+        </NavigationLink>
       </li>
       {isLoading ? (
         <li className="text-gray-300 text-sm">در حال بارگذاری...</li>
       ) : latestPosts.length > 0 ? (
         latestPosts.map((post) => (
           <li key={post.id}>
-            <Link
+            <NavigationLink
               href={`/blog/${post.slug}`}
               className="text-gray-300 hover:text-[#FFD60A] transition-colors duration-300 text-sm flex items-center gap-2 group line-clamp-2"
               aria-label={`خواندن مقاله: ${post.title}`}
             >
               <span className="w-1.5 h-1.5 bg-[#FFD60A] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0"></span>
               <span className="line-clamp-2">{post.title}</span>
-            </Link>
+            </NavigationLink>
           </li>
         ))
       ) : (
@@ -72,4 +71,3 @@ export default function FooterBlogLinks() {
     </ul>
   );
 }
-
