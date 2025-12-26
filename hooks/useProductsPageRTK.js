@@ -3,7 +3,7 @@
  * Provides automatic caching, deduplication, and better performance
  */
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { productCategories } from "@/data/categories";
 import { useProductsFilter } from "@/hooks/useProductsFilter";
 import { useLazyGetProductsQuery } from "@/store/api/productsApi";
@@ -39,6 +39,43 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
 
   // RTK Query hook - lazy query for manual triggering
   const [triggerGetProducts, { data, isLoading: isRTKLoading, error }] = useLazyGetProductsQuery();
+
+  const buildProductsSearchParams = useCallback((params) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.append("page", params.page.toString());
+    if (params.limit) searchParams.append("limit", params.limit.toString());
+    if (params.category) searchParams.append("category", params.category);
+    if (params.subcategory) searchParams.append("subcategory", params.subcategory);
+    if (params.search) searchParams.append("search", params.search);
+    if (params.inStock) searchParams.append("inStock", "true");
+    if (params.onSale) searchParams.append("onSale", "true");
+    if (params.size) searchParams.append("size", params.size);
+    if (params.color) searchParams.append("color", params.color);
+    if (params.minPrice) searchParams.append("minPrice", params.minPrice.toString());
+    if (params.maxPrice) searchParams.append("maxPrice", params.maxPrice.toString());
+    if (params.sortBy) searchParams.append("sortBy", params.sortBy);
+    return searchParams;
+  }, []);
+
+  const fetchProductsWithFallback = useCallback(async (params) => {
+    try {
+      return await triggerGetProducts(params).unwrap();
+    } catch (rtkError) {
+      const searchParams = buildProductsSearchParams(params);
+      const response = await fetch(`/api/products?${searchParams.toString()}`);
+
+      if (!response.ok) {
+        throw rtkError;
+      }
+
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw rtkError;
+      }
+
+      return await response.json();
+    }
+  }, [buildProductsSearchParams, triggerGetProducts]);
 
   const categoryInfo = categorySlug
     ? productCategories.find((cat) => cat.slug === categorySlug)
@@ -81,7 +118,7 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
         if (categoryToUse) params.category = categoryToUse;
         if (subcategorySlug) params.subcategory = subcategorySlug;
 
-        const result = await triggerGetProducts(params).unwrap();
+        const result = await fetchProductsWithFallback(params);
         if (result?.success) {
           setAllProductsForFilters(result.data || []);
           return;
@@ -111,7 +148,7 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
     };
 
     fetchAllProductsForFilters();
-  }, [categorySlug, subcategorySlug, selectedCategoryFilter, triggerGetProducts]);
+  }, [categorySlug, subcategorySlug, selectedCategoryFilter, fetchProductsWithFallback]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -148,7 +185,8 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
           sortBy: sortBy,
         };
 
-        if (categorySlug) params.category = categorySlug;
+        const categoryToUse = categorySlug || selectedCategoryFilter;
+        if (categoryToUse) params.category = categoryToUse;
         if (subcategorySlug) params.subcategory = subcategorySlug;
         if (inStock) params.inStock = true;
         if (onSale) params.onSale = true;
@@ -158,7 +196,7 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
         if (priceRange[1] < MAX_PRICE) params.maxPrice = priceRange[1];
         if (searchQuery) params.search = searchQuery;
 
-        const result = await triggerGetProducts(params).unwrap();
+        const result = await fetchProductsWithFallback(params);
 
         if (result?.success) {
           setProducts(result.data || []);
@@ -210,7 +248,7 @@ export function useProductsPageRTK({ categorySlug, subcategorySlug, searchQuery 
     selectedCategoryFilter,
     priceRange,
     searchQuery,
-    triggerGetProducts,
+    fetchProductsWithFallback,
   ]);
 
   const filteredProducts = useMemo(() => {
