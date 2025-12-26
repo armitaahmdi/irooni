@@ -106,6 +106,7 @@ model Product {
   images          String[] // Array of image URLs
   price           Int // Original price in Toman
   discountPercent Int? // Discount percentage (optional)
+  rating          Float? @default(4.8)
   sizes           String[] // Array of sizes like ["S", "M", "L"]
   colors          String[] // Array of Persian color names
   stock           Int       @default(0) // Inventory quantity (legacy - total stock)

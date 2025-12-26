@@ -12,6 +12,7 @@ const INITIAL_FORM_DATA = {
   images: [],
   price: "",
   discountPercent: "",
+  rating: "",
   stock: "",
   sizeStock: {},
   variants: [],
@@ -83,6 +84,7 @@ export function useProductForm(productId, isEdit = false) {
           images: product.images || [],
           price: product.price?.toString() || "",
           discountPercent: discountPercent,
+          rating: product.rating?.toString() || "",
           stock: product.stock?.toString() || "0",
           sizeStock: product.sizeStock || {},
           variants:
@@ -134,6 +136,10 @@ export function useProductForm(productId, isEdit = false) {
           ...formData,
           price: parseInt(formData.price),
           discountPercent: formData.discountPercent ? parseInt(formData.discountPercent) : null,
+          rating:
+            formData.rating && !Number.isNaN(parseFloat(formData.rating))
+              ? parseFloat(formData.rating)
+              : null,
           stock: parseInt(formData.stock) || 0,
           sizeStock: formData.sizeStock || {},
           variants: (formData.variants || []).map((v) => ({
@@ -191,4 +197,3 @@ export function useProductForm(productId, isEdit = false) {
     handleSubmit,
   };
 }
-

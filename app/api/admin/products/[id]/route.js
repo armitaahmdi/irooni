@@ -93,6 +93,7 @@ export async function PUT(request, { params }) {
       images,
       price,
       discountPercent,
+      rating,
       stock,
       sizeStock,
       sizes,
@@ -142,6 +143,12 @@ export async function PUT(request, { params }) {
     if (price) updateData.price = parseInt(price);
     if (discountPercent !== undefined) {
       updateData.discountPercent = discountPercent ? parseInt(discountPercent) : null;
+    }
+    if (rating !== undefined) {
+      updateData.rating =
+        rating !== null && rating !== "" && !Number.isNaN(parseFloat(rating))
+          ? parseFloat(rating)
+          : null;
     }
     if (stock !== undefined) updateData.stock = parseInt(stock) || 0;
     if (sizeStock !== undefined) updateData.sizeStock = sizeStock || {};
@@ -482,4 +489,3 @@ export async function DELETE(request, { params }) {
     );
   }
 }
-
