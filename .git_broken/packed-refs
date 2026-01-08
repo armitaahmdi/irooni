@@ -1,0 +1,24 @@
+# pack-refs with: peeled fully-peeled sorted 
+d60dd3768e548bd5a1c407b26335c329579ac4c9 refs/heads/main
+e7bd0d8fa904db91a6a19c33953697c92f822966 refs/remotes/origin/codex-wphlel
+58d35cdde80cc4a744a66abe0e489e7213a7eea9 refs/remotes/origin/codex/add-aria-label-and-title-attributes
+53b57cfc20a929349849997d17fc7d70bc35deda refs/remotes/origin/codex/adjust-faq-section-spacing-on-mobile
+254f6332e9ec58aea499a540c2b5112cd436b93a refs/remotes/origin/codex/connect-all-products-to-api
+b2a18c061c2818d8637717679c4623b0941cc8b2 refs/remotes/origin/codex/evaluate-professionalism-of-navigation-button
+92eaee29382a04572e039980947ca74297fb1279 refs/remotes/origin/codex/fetch-latest-products-from-ebay
+447ec755b251f8bf2e64c5702bf3523e97600840 refs/remotes/origin/codex/fix-error-fetching-products-for-filters
+fae9e6df3ececc6bc91a29bacfa725e5e95bbfc0 refs/remotes/origin/codex/fix-latest-products-display-issue
+642e0ee1f672aba903ed4fd695ba42ac58254a79 refs/remotes/origin/codex/fix-mobile-bottom-navigation-errors
+86a0c31ea424ca24e12d920d87b3593da45a07cf refs/remotes/origin/codex/fix-mobile-responsiveness-for-dashboard
+518a6fb02013ff349c123cf0eb4d299a4b81ff60 refs/remotes/origin/codex/fix-product-fetching-console-error
+dd58d838542a2ce298668b506f8f88fbf5715c97 refs/remotes/origin/codex/fix-product-fetching-error
+b6e25254a64d61e3d2bb35e6b87f01e7897c5b7e refs/remotes/origin/codex/fix-product-page-loading-error
+f40840f4bed0f15add40e3e8e739cd81c64ab0bf refs/remotes/origin/codex/fix-responsive-display-issues-in-ui
+c1b4f935e2c6a83b6dee890ddb855e734bbdbf51 refs/remotes/origin/codex/fix-showing-products-in-new-arrivals
+5e83c3d0284896bec57245f6c4342dfa85e5e4c7 refs/remotes/origin/codex/improve-login-page-layout
+edb057a6b41abe1c55a490d8abc0800805dea2a0 refs/remotes/origin/codex/improve-ui/ux-for-professional-development
+5f40329ffbd61d5ad8fb92f02d0f0e9371a5c807 refs/remotes/origin/codex/investigate-link-navigation-delay
+0a486f87de6f7e092de1acd8e9965b3e70adaa12 refs/remotes/origin/codex/optimize-mobile-login-ui-design
+fff4d200bc3ee7f098c66687cdbeef9a895d5e44 refs/remotes/origin/codex/replace-div-with-button-for-filters-toggle
+635d28074e583a6812756f85a699248eb81f0e0f refs/remotes/origin/codex/sync-product-card-with-backend-data
+d60dd3768e548bd5a1c407b26335c329579ac4c9 refs/remotes/origin/main

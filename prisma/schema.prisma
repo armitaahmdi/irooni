@@ -1,0 +1,470 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+// User Model
+model User {
+  id            String    @id @default(cuid())
+  phone         String    @unique
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          String    @default("user") // "user" or "admin"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts  Account[]
+  sessions  Session[]
+  addresses Address[]
+  cart      Cart?
+  orders    Order[]
+  reviews   Review[]
+  reviewReplies ReviewReply[]
+  reviewHelpfulVotes ReviewHelpful[]
+  articleLikes ArticleLike[]
+}
+
+// Account Model (برای OAuth providers)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+// Session Model
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// Verification Token Model (برای OTP و Email verification)
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// Category Model
+model Category {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  parentId    String?
+  parent      Category?  @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Category[] @relation("CategoryToCategory")
+  products    Product[]
+  subProducts Product[]  @relation("ProductSubcategory")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([parentId])
+  @@map("categories")
+}
+
+// Product Model
+model Product {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String?   @unique
+  code            String    @unique
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subcategoryId   String?
+  subcategory     Category? @relation("ProductSubcategory", fields: [subcategoryId], references: [id], onDelete: SetNull)
+  image           String
+  images          String[] // Array of image URLs
+  price           Int // Original price in Toman
+  discountPercent Int? // Discount percentage (optional)
+  rating          Float? @default(4.8)
+  sizes           String[] // Array of sizes like ["S", "M", "L"]
+  colors          String[] // Array of Persian color names
+  stock           Int       @default(0) // Inventory quantity (legacy - total stock)
+  sizeStock       Json? // Stock per size: {"S": 5, "M": 3, "L": 0}
+  inStock         Boolean   @default(true)
+  isVisible       Boolean   @default(true) // نمایش محصول برای کاربران (false = بلاک شده)
+  material        String?
+  description     String?   @db.Text
+  features        String[] // Array of features
+  sizeChart       Json? // Size chart data as JSON
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Legacy fields for migration (will be removed after migration)
+  categoryLegacy    String? @map("category")
+  subcategoryLegacy String? @map("subcategory")
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+  variants   ProductVariant[] // ورینت‌های محصول
+  reviews    Review[] // نظرات محصول
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([subcategoryId])
+  @@index([categoryId, subcategoryId])
+  @@index([isVisible, inStock])
+  @@index([categoryId, isVisible, inStock])
+  @@index([price])
+  @@index([createdAt])
+  @@index([rating])
+  @@index([discountPercent])
+  @@map("products")
+}
+
+// Product Variant Model (ورینت‌های محصول - سایز و رنگ)
+model ProductVariant {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color     String // رنگ
+  size      String // سایز
+  price     Int // قیمت این ورینت (می‌تواند متفاوت از قیمت محصول باشد)
+  stock     Int      @default(0) // موجودی این ورینت
+  image     String? // تصویر مخصوص این ورینت (اختیاری)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  @@unique([productId, color, size]) // هر ترکیب سایز+رنگ باید یکتا باشد
+  @@index([productId])
+  @@index([stock])
+  @@index([productId, stock])
+  @@index([productId, color, size])
+  @@map("product_variants")
+}
+
+// Address Model
+model Address {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String // عنوان آدرس (مثل: خانه، محل کار)
+  province   String // استان
+  city       String // شهر
+  address    String // آدرس کامل
+  plaque     String? // پلاک
+  unit       String? // واحد
+  postalCode String? // کدپستی
+  latitude   Float? // عرض جغرافیایی
+  longitude  Float? // طول جغرافیایی
+  isDefault  Boolean  @default(false) // آدرس پیش‌فرض
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  orders Order[]
+
+  @@index([userId])
+  @@index([userId, isDefault])
+  @@map("addresses")
+}
+
+// Cart Model (سبد خرید)
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("carts")
+}
+
+// Cart Item Model (آیتم‌های سبد خرید)
+model CartItem {
+  id        String          @id @default(cuid())
+  cartId    String
+  cart      Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId String? // ورینت انتخاب شده
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  quantity  Int             @default(1)
+  size      String? // سایز انتخاب شده (legacy - برای backward compatibility)
+  color     String? // رنگ انتخاب شده (legacy - برای backward compatibility)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([cartId])
+  @@index([productId])
+  @@index([variantId])
+  @@map("cart_items")
+}
+
+// Order Model (سفارش)
+model Order {
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderNumber    String      @unique // شماره سفارش
+  status         String      @default("pending") // pending, processing, shipped, delivered, cancelled
+  paymentStatus  String      @default("unpaid") // unpaid, paid, refunded
+  paymentMethod  String? // روش پرداخت
+  totalAmount    Int // مبلغ کل به تومان
+  shippingCost   Int         @default(0) // هزینه ارسال
+  couponId       String? // کد تخفیف استفاده شده
+  coupon         Coupon?    @relation(fields: [couponId], references: [id])
+  discountAmount Int         @default(0) // مبلغ تخفیف اعمال شده
+  addressId      String // آدرس ارسال
+  address        Address?    @relation(fields: [addressId], references: [id])
+  items          OrderItem[]
+  notes          String?     @db.Text // یادداشت کاربر
+  adminNotes     String?     @db.Text // یادداشت ادمین
+  trackingNumber String? // شماره پیگیری پست
+  shippedAt      DateTime? // تاریخ ارسال
+  deliveredAt    DateTime? // تاریخ تحویل
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([userId])
+  @@index([orderNumber])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, status])
+  @@index([status, createdAt])
+  @@index([paymentStatus])
+  @@index([userId, createdAt])
+  @@map("orders")
+}
+
+// Order Item Model (آیتم‌های سفارش)
+model OrderItem {
+  id           String          @id @default(cuid())
+  orderId      String
+  order        Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId    String?
+  product      Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variantId    String? // ورینت انتخاب شده
+  variant      ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  productName  String // نام محصول در زمان سفارش (برای تاریخچه)
+  productImage String // تصویر محصول در زمان سفارش
+  productPrice Int // قیمت محصول در زمان سفارش
+  quantity     Int // تعداد
+  size         String? // سایز (legacy - برای backward compatibility)
+  color        String? // رنگ (legacy - برای backward compatibility)
+  subtotal     Int // قیمت کل این آیتم (price * quantity)
+  createdAt    DateTime        @default(now())
+
+  @@index([orderId])
+  @@index([productId])
+  @@index([variantId])
+  @@map("order_items")
+}
+
+// Article Model (مقالات)
+model Article {
+  id          String   @id @default(cuid())
+  title       String? // عنوان مقاله (اختیاری)
+  slug        String   @unique // اسلاگ یکتا برای URL
+  image       String? // تصویر مقاله (اختیاری)
+  content     String?  @db.Text // محتوای مقاله (اختیاری)
+  excerpt     String?  @db.Text // خلاصه مقاله (اختیاری)
+  category    String? // دسته‌بندی (اختیاری)
+  isPublished Boolean  @default(false) // وضعیت انتشار
+  likeCount   Int      @default(0) // تعداد لایک
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  likes       ArticleLike[] // لایک‌های کاربران
+
+  @@index([slug])
+  @@index([isPublished])
+  @@index([category])
+  @@index([isPublished, category])
+  @@index([isPublished, createdAt])
+  @@index([category, isPublished, createdAt])
+  @@map("articles")
+}
+
+// ArticleLike Model (لایک مقالات)
+model ArticleLike {
+  id        String   @id @default(cuid())
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([articleId, userId]) // هر کاربر فقط یک بار می‌تواند لایک کند
+  @@index([articleId])
+  @@index([userId])
+  @@map("article_likes")
+}
+
+// Hero Slide Model (بنرهای اسلایدر)
+model HeroSlide {
+  id          String   @id @default(cuid())
+  image       String // تصویر دسکتاپ
+  imageMobile String // تصویر موبایل
+  alt         String // متن alt برای SEO
+  link        String? // لینک بنر (اختیاری)
+  overlay     Boolean  @default(true) // نمایش overlay
+  order       Int      @default(0) // ترتیب نمایش
+  isActive    Boolean  @default(true) // فعال/غیرفعال
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([order])
+  @@index([isActive, order])
+  @@map("hero_slides")
+}
+
+// Contact Message Model (پیام‌های تماس با ما)
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false) // خوانده شده/نشده
+  repliedAt DateTime? // تاریخ پاسخ
+  reply     String?  @db.Text // پاسخ ادمین
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isRead])
+  @@index([createdAt])
+  @@index([isRead, createdAt])
+  @@map("contact_messages")
+}
+
+// Review Model (نظرات و امتیازدهی محصولات)
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int      // امتیاز از 1 تا 5
+  title     String?  // عنوان نظر (اختیاری)
+  comment   String?  @db.Text // متن نظر (اختیاری)
+  isApproved Boolean @default(false) // تایید شده توسط ادمین
+  isVerifiedPurchase Boolean @default(false) // خرید تایید شده
+  helpfulCount Int   @default(0) // تعداد مفید بودن
+  unhelpfulCount Int @default(0) // تعداد غیرمفید بودن
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  replies   ReviewReply[] // پاسخ‌ها به این نظر
+  helpfulVotes ReviewHelpful[] // رای‌های مفید بودن
+
+  @@unique([productId, userId]) // هر کاربر فقط یک نظر برای هر محصول
+  @@index([productId])
+  @@index([userId])
+  @@index([isApproved])
+  @@index([rating])
+  @@index([productId, isApproved])
+  @@index([productId, rating])
+  @@index([userId, productId])
+  @@map("reviews")
+}
+
+// ReviewReply Model (پاسخ به نظرات)
+model ReviewReply {
+  id        String   @id @default(cuid())
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reply     String   @db.Text // متن پاسخ
+  isAdminReply Boolean @default(false) // پاسخ از طرف ادمین
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([reviewId])
+  @@index([userId])
+  @@map("review_replies")
+}
+
+// ReviewHelpful Model (رای مفید/غیرمفید بودن)
+model ReviewHelpful {
+  id        String   @id @default(cuid())
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isHelpful Boolean  @default(true) // true = مفید، false = غیرمفید
+  createdAt DateTime @default(now())
+
+  @@unique([reviewId, userId]) // هر کاربر فقط یک بار می‌تواند رای دهد
+  @@index([reviewId])
+  @@index([userId])
+  @@map("review_helpful")
+}
+
+// Coupon Model (کدهای تخفیف)
+model Coupon {
+  id            String    @id @default(cuid())
+  code          String    @unique // کد تخفیف (مثلاً: SUMMER2024)
+  description   String?   @db.Text // توضیحات
+  discountType  String    // "percentage" یا "fixed" (درصدی یا مبلغ ثابت)
+  discountValue Int       // مقدار تخفیف (درصد یا مبلغ به تومان)
+  minPurchase   Int?      // حداقل خرید برای اعمال تخفیف (به تومان)
+  maxDiscount   Int?      // حداکثر تخفیف (برای درصدی)
+  usageLimit    Int?      // محدودیت تعداد استفاده
+  usedCount     Int       @default(0) // تعداد استفاده شده
+  isActive      Boolean   @default(true) // فعال/غیرفعال
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  orders        Order[]   // سفارشاتی که از این کد استفاده کرده‌اند
+
+  @@index([code])
+  @@index([isActive])
+  @@index([isActive, code])
+  @@map("coupons")
+}
+
+// LogEntry Model (لاگ‌های سیستم)
+model LogEntry {
+  id        String   @id @default(cuid())
+  timestamp DateTime // زمان وقوع
+  level     String   // DEBUG, INFO, WARN, ERROR
+  message   String   // پیام لاگ
+  context   String?  @db.Text // اطلاعات اضافی به صورت JSON
+  userAgent String?  // User Agent مرورگر
+  url       String?  // URL صفحه
+  userId    String?  // شناسه کاربر (اختیاری)
+  createdAt DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([level])
+  @@index([userId])
+  @@index([level, timestamp])
+  @@index([userId, timestamp])
+  @@map("log_entries")
+}

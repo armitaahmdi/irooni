@@ -1,0 +1,41 @@
+0000000000000000000000000000000000000000 38fe88f3df19f3f8cf16e6108955bafd1825bc3d armitaahmdi <armitaahamdi.business@gmail.com> 1766743657 +0330	commit (initial): Initial commit - Irooni e-commerce project
+38fe88f3df19f3f8cf16e6108955bafd1825bc3d 0000000000000000000000000000000000000000 armitaahmdi <armitaahamdi.business@gmail.com> 1766743665 +0330	Branch: renamed refs/heads/master to refs/heads/main
+0000000000000000000000000000000000000000 38fe88f3df19f3f8cf16e6108955bafd1825bc3d armitaahmdi <armitaahamdi.business@gmail.com> 1766743665 +0330	Branch: renamed refs/heads/master to refs/heads/main
+38fe88f3df19f3f8cf16e6108955bafd1825bc3d 4cb9e5c99fc7bb8b5b07eb09666c518d168e8350 armitaahmdi <armitaahamdi.business@gmail.com> 1766744670 +0330	pull origin main: Fast-forward
+4cb9e5c99fc7bb8b5b07eb09666c518d168e8350 0c1a43c4c2e976059bf7604d049fb07632dc2e4a armitaahmdi <armitaahamdi.business@gmail.com> 1766748683 +0330	pull origin main: Fast-forward
+0c1a43c4c2e976059bf7604d049fb07632dc2e4a 0cbfdd96551b6fd98bdc463103c76a42ead2a327 armitaahmdi <armitaahamdi.business@gmail.com> 1766749370 +0330	pull origin main: Fast-forward
+0cbfdd96551b6fd98bdc463103c76a42ead2a327 c17cc764fc4a18a3252ff357c49cfa9be6dceaf5 armitaahmdi <armitaahamdi.business@gmail.com> 1766750163 +0330	pull origin main: Fast-forward
+c17cc764fc4a18a3252ff357c49cfa9be6dceaf5 0dc359bf5a6fb12edda1324f01ec772091908ee5 armitaahmdi <armitaahamdi.business@gmail.com> 1766750840 +0330	pull origin main: Fast-forward
+0dc359bf5a6fb12edda1324f01ec772091908ee5 b10edbf653603d3391695aa533003e6d830c6108 armitaahmdi <armitaahamdi.business@gmail.com> 1766751831 +0330	commit: responsive
+b10edbf653603d3391695aa533003e6d830c6108 b10edbf653603d3391695aa533003e6d830c6108 armitaahmdi <armitaahamdi.business@gmail.com> 1766751982 +0330	reset: moving to HEAD
+b10edbf653603d3391695aa533003e6d830c6108 7b095ca3bad45cdeda3c66a599cdf9be1a143c71 armitaahmdi <armitaahamdi.business@gmail.com> 1766752159 +0330	pull --rebase origin main (start): checkout 7b095ca3bad45cdeda3c66a599cdf9be1a143c71
+7b095ca3bad45cdeda3c66a599cdf9be1a143c71 a8adf520a1bc058741eac1ab43b7a94bed642a5c armitaahmdi <armitaahamdi.business@gmail.com> 1766752297 +0330	rebase (continue): responsive
+a8adf520a1bc058741eac1ab43b7a94bed642a5c a8adf520a1bc058741eac1ab43b7a94bed642a5c armitaahmdi <armitaahamdi.business@gmail.com> 1766752305 +0330	rebase (finish): returning to refs/heads/main
+a8adf520a1bc058741eac1ab43b7a94bed642a5c 00bf8ddbae7b40cf772c0b0bde7bebb85ee81040 armitaahmdi <armitaahamdi.business@gmail.com> 1766754205 +0330	commit: responsive
+00bf8ddbae7b40cf772c0b0bde7bebb85ee81040 fd469468435d541f8c4dae5a30649b0522f79c1e armitaahmdi <armitaahamdi.business@gmail.com> 1766754944 +0330	pull origin main: Fast-forward
+fd469468435d541f8c4dae5a30649b0522f79c1e 4a7319e5974b91b7680ede2123d799d6ce50dc74 armitaahmdi <armitaahamdi.business@gmail.com> 1767260402 +0330	commit: produCtion
+4a7319e5974b91b7680ede2123d799d6ce50dc74 4c004a9b9dfd82766af68e2982d8a7a1f44b4931 armitaahmdi <armitaahamdi.business@gmail.com> 1767263570 +0330	pull origin main: Fast-forward
+4c004a9b9dfd82766af68e2982d8a7a1f44b4931 f44425efb9d40a74781c343913a2a40d2d292747 armitaahmdi <armitaahamdi.business@gmail.com> 1767263997 +0330	commit: produCtion2
+f44425efb9d40a74781c343913a2a40d2d292747 c984a7f06e18860f0c7f136e72a6cefa0ab79907 armitaahmdi <armitaahamdi.business@gmail.com> 1767265834 +0330	commit: produCtion3
+c984a7f06e18860f0c7f136e72a6cefa0ab79907 de2d39128ff6be2372199040915154d1fc98d4a2 armitaahmdi <armitaahamdi.business@gmail.com> 1767266120 +0330	commit: produCtion3
+de2d39128ff6be2372199040915154d1fc98d4a2 956515dbe13fdcb9abdb2ed4d5669cf6c185d38d armitaahmdi <armitaahamdi.business@gmail.com> 1767266334 +0330	commit: produCtion3
+956515dbe13fdcb9abdb2ed4d5669cf6c185d38d 84efcb98b4b0e72fdae90673a8c8fb56afd2dbc6 armitaahmdi <armitaahamdi.business@gmail.com> 1767266395 +0330	commit: produCtion3
+84efcb98b4b0e72fdae90673a8c8fb56afd2dbc6 a698fa6313e4c02d101e10fd6eab4cb2a71abee2 armitaahmdi <armitaahamdi.business@gmail.com> 1767267171 +0330	commit: delete redis
+a698fa6313e4c02d101e10fd6eab4cb2a71abee2 de948b4a20272c41f2a0e2c339d9e9f345733a77 armitaahmdi <armitaahamdi.business@gmail.com> 1767267777 +0330	commit: 404
+de948b4a20272c41f2a0e2c339d9e9f345733a77 b55b1c171e44c69954a78f9acc350c5b08707f8a armitaahmdi <armitaahamdi.business@gmail.com> 1767268038 +0330	commit: 404
+b55b1c171e44c69954a78f9acc350c5b08707f8a e98faaaf7bb98deaf454fb8f2b611168e4a4a376 armitaahmdi <armitaahamdi.business@gmail.com> 1767270030 +0330	commit: seed
+e98faaaf7bb98deaf454fb8f2b611168e4a4a376 65e3b5aa9d69c2a01a0f114e279fe180d708955b armitaahmdi <armitaahamdi.business@gmail.com> 1767273674 +0330	commit: seed
+65e3b5aa9d69c2a01a0f114e279fe180d708955b 12392ed1947e6b73422e74e7d5b70f2feb5e3776 armitaahmdi <armitaahamdi.business@gmail.com> 1767273976 +0330	commit: seed
+12392ed1947e6b73422e74e7d5b70f2feb5e3776 f3d2397b089a64230ab77fc5f53fbe68d04bd81f armitaahmdi <armitaahamdi.business@gmail.com> 1767274415 +0330	commit: seed
+f3d2397b089a64230ab77fc5f53fbe68d04bd81f 57214bf1c7abfc033842aa93b5438ead8405d433 armitaahmdi <armitaahamdi.business@gmail.com> 1767274944 +0330	commit: seed
+57214bf1c7abfc033842aa93b5438ead8405d433 b44bab28468bd084aed90f809b78e62178863e26 armitaahmdi <armitaahamdi.business@gmail.com> 1767283515 +0330	commit: docker
+b44bab28468bd084aed90f809b78e62178863e26 7693b146e66466c9a237044e94a66fce18e1c33c armitaahmdi <armitaahamdi.business@gmail.com> 1767294355 +0330	pull origin main: Fast-forward
+7693b146e66466c9a237044e94a66fce18e1c33c 441260d11e38d27e45f3baf132c19722a3ef4f39 armitaahmdi <armitaahamdi.business@gmail.com> 1767295445 +0330	commit: csp
+441260d11e38d27e45f3baf132c19722a3ef4f39 50d866ddaa2d1e7fa2628013a3b662ae710af134 armitaahmdi <armitaahamdi.business@gmail.com> 1767299808 +0330	commit: doccccker
+50d866ddaa2d1e7fa2628013a3b662ae710af134 05e4030e6681bc9abf2f68afac2a31f00162efc4 armitaahmdi <armitaahamdi.business@gmail.com> 1767306443 +0330	pull origin main: Fast-forward
+05e4030e6681bc9abf2f68afac2a31f00162efc4 f666878ed5206aba8822675aee7aeeabbfba80b4 armitaahmdi <armitaahamdi.business@gmail.com> 1767307087 +0330	commit: لاگین و روتینگ
+f666878ed5206aba8822675aee7aeeabbfba80b4 d4191824acd7bd24ded70499126c77cd937ae893 armitaahmdi <armitaahamdi.business@gmail.com> 1767308238 +0330	commit: لاگین و روتینگ
+d4191824acd7bd24ded70499126c77cd937ae893 40787cd0d433ee56806a9665e6ac3a66a2838f4c armitaahmdi <armitaahamdi.business@gmail.com> 1767430934 +0330	pull: Fast-forward
+40787cd0d433ee56806a9665e6ac3a66a2838f4c 8245f14fda4faaa98b1f2de8f568274a7ec64609 armitaahmdi <armitaahamdi.business@gmail.com> 1767431806 +0330	commit: prisma v6
+8245f14fda4faaa98b1f2de8f568274a7ec64609 e37e319e2aa45fdb19ed671f89625edefda3bedd armitaahmdi <armitaahamdi.business@gmail.com> 1767599001 +0330	pull origin main: Fast-forward
+e37e319e2aa45fdb19ed671f89625edefda3bedd 52e4dd90e1f91d13ce9b3439a52d7470b2f61838 armitaahmdi <armitaahamdi.business@gmail.com> 1767621960 +0330	commit: shet shet
